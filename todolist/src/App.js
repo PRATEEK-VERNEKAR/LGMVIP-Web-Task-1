@@ -1,8 +1,13 @@
 import './App.css';
-import { useState} from 'react';
+import { useState,useEffect} from 'react';
 
 function App() {
-  const [tasks,setTasks]=useState([]);
+  const initialTasks=JSON.parse(localStorage.getItem('tasks')) || [];
+  const [tasks,setTasks]=useState(initialTasks);
+
+  useEffect(()=>{
+    localStorage.setItem('tasks',JSON.stringify(tasks));
+  },[tasks]);
   
   const handleNew=()=>{
     // setTasks([...tasks," "])
@@ -27,23 +32,22 @@ function App() {
     const newTasks=tasks.filter((data,index)=>{
       return index!==currindex;
     })
-
     setTasks(newTasks);
   }
 
   return (
-    <div class="App">
-      <div class='inner title-parent'>
-        <div class='title'>
+    <div className="App">
+      <div className='inner title-parent'>
+        <div className='title'>
           <h1>Todo List</h1>
-          <button class='new' onClick={handleNew}>+</button>
+          <button className='new' onClick={handleNew}>+</button>
         </div>
       </div>
 
       {
         tasks.map((data,index)=>{
           return(
-            <div class='inner inputArea'>
+            <div className='inner inputArea' key={index}>
               <input name='task' id='task' value={data} placeholder='Task' onChange={(e)=>{handleChange(e,index)}}></input>
               <button onClick={(e)=>{handleDelete(e,index)}}>X</button>
             </div>
