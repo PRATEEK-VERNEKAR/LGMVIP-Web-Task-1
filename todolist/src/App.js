@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import {useEffect, useState} from 'react';
+import { useState} from 'react';
 
 function App() {
   const [tasks,setTasks]=useState([]);
@@ -14,7 +13,6 @@ function App() {
     const newTasks=tasks.map((data,index)=>{
       // console.log("index = ",index," currindex = ",currindex);
       if(index===currindex){
-        console.log('he')
         return e.target.value;
       }
       else{
@@ -25,23 +23,29 @@ function App() {
     setTasks(newTasks);
   }
 
+  const handleDelete=(e,currindex)=>{
+    const newTasks=tasks.filter((data,index)=>{
+      return index!==currindex;
+    })
+
+    setTasks(newTasks);
+  }
 
   return (
     <div class="App">
       <div class='inner title-parent'>
         <div class='title'>
           <h1>Todo List</h1>
-          <p>Organise all your work here</p>
+          <button class='new' onClick={handleNew}>+</button>
         </div>
       </div>
-      <div class='inner'>
-        <button onClick={handleNew}>Plux</button>
-      </div>
+
       {
         tasks.map((data,index)=>{
           return(
             <div class='inner inputArea'>
               <input name='task' id='task' value={data} placeholder='Task' onChange={(e)=>{handleChange(e,index)}}></input>
+              <button onClick={(e)=>{handleDelete(e,index)}}>X</button>
             </div>
           )
         })
